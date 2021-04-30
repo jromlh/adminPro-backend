@@ -18,13 +18,11 @@ console.log(process.env);
 
 /* Middleware */
 app.use(cors());
+app.use(express.json()); //lectora y parseo del body
 
-app.get('/', (req, res) => {
-    res.status(200).json({
-        ok: 'true',
-        msg: 'Welcome to this server app'
-    });
-});
+/* Routes */
+app.use('/api/usuarios', require('./routes/usuario'));
+app.use('/api/login', require('./routes/auth'));
 
 app.listen(process.env.PORT, () => {
     console.log(`Servidor en el puerto ${process.env.PORT}`);
