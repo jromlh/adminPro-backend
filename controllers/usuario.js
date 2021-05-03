@@ -7,12 +7,26 @@ const User = require('../models/usuario');
 
 const getUsuarios = async(req, res) => {
 
-    const users = await User.find({}, 'name email role');
+    const desde = Number(req.query.desde) || 0;
+
+    /* 
+        De sta manera podemos hacer varias consultas asincronas simultaneas
+        y se regresa una arreglo con los resultados de cada promesa
+    */
+    const [usuarios, total] = await Promise.all([
+        User
+        .find({}, 'name email role img')
+        .skip(desde)
+        .limit(5),
+
+        User.countDocuments()
+    ]);
 
     res.status(200).json({
         ok: 'true',
-        users,
-        uid: req.uid
+        usuarios,
+        uid: req.uid,
+        total
     });
 }
 
