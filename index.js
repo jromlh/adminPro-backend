@@ -16,6 +16,8 @@ dbConnection();
 console.log(process.env);
 */
 
+app.use(express.static('public'));
+
 /* Middleware */
 app.use(cors());
 app.use(express.json()); //lectora y parseo del body
